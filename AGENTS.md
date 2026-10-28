@@ -24,6 +24,8 @@ Typical workflow is:
 
 Use Node 24 and npm 11. The repository pins its runtime family in [.nvmrc](.nvmrc), package requirements and commands in [package.json](package.json), and dependencies in [package-lock.json](package-lock.json).
 
+Set the Node engine range from dependency requirements and the supported Node major, rather than the patch installed on a developer's machine. Keep the root lockfile metadata consistent and verify installation with the CI runtime. Sources: [package.json](package.json), [package-lock.json](package-lock.json), and the user-provided CI error on 2026-10-28: Node 24.21.0 was incorrectly rejected by the former `>=24.22.1` minimum.
+
 ```sh
 nvm install
 nvm use
