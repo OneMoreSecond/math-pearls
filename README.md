@@ -24,7 +24,21 @@ Write the article here.
 
 Sources: [the MDX home page](src/pages/index.mdx), [the shared layout](src/layouts/Page.astro), and [Astro file-based routing](https://docs.astro.build/en/guides/routing/).
 
-Use existing interactive components by importing them into your MDX article. Ask an agent to create or adapt a reusable component when an article needs new interactive behavior. Sources: [component ownership and development](AGENTS.md#implementation) and [MDX components](https://docs.astro.build/en/guides/integrations-guide/mdx/#using-components-in-mdx).
+### Interactive components
+
+Import reusable components from `src/components/` into an MDX article. For example, in `src/pages/articles/topic.mdx`, add this after the frontmatter:
+
+```mdx
+import SquareNumbers from '../../components/SquareNumbers.astro';
+
+<SquareNumbers />
+```
+
+`SquareNumbers` lets readers vary a square's side length from 1 to 10 and see how successive odd numbers add up to a square number. It needs no props or framework directive, and can appear multiple times on a page. Without JavaScript, readers see the initial square and equation. Sources: [SquareNumbers.astro](src/components/SquareNumbers.astro) and [the live home-page example](src/pages/index.mdx).
+
+Ask an agent to create or adapt a reusable component when an article needs new interactive behavior. Source: [component ownership and development](AGENTS.md#implementation).
+
+### Links and assets
 
 Prefix local links and public asset URLs with `import.meta.env.BASE_URL`; this includes `/math-pearls/` with the configured trailing slash. Example in MDX:
 

@@ -41,6 +41,8 @@ Use static Astro output with the MDX integration and strict Astro TypeScript con
 
 Add reusable interactive components under `src/components/` when needed, then expose them for authors to import from MDX. Astro components can use browser scripts without adding a UI framework. Sources: the ownership instructions above, [MDX components](https://docs.astro.build/en/guides/integrations-guide/mdx/#using-components-in-mdx), and [Astro scripts](https://docs.astro.build/en/guides/client-side-scripts/).
 
+The reusable component library starts with [SquareNumbers](src/components/SquareNumbers.astro). Keep browser behavior scoped to each instance and render useful initial HTML before JavaScript runs. Author import examples belong in [README.md](README.md#interactive-components). Sources: [SquareNumbers.astro](src/components/SquareNumbers.astro), [the home page](src/pages/index.mdx), and the documentation responsibilities above.
+
 Use `import.meta.env.BASE_URL` for internal links and public asset URLs. The configured base is `/math-pearls`, with a trailing slash in `BASE_URL`. Sources: [astro.config.mjs](astro.config.mjs) and [the layout home link](src/layouts/Page.astro).
 
 ## Validation

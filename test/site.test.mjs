@@ -28,3 +28,29 @@ test('MDX builds with the shared layout and GitHub Pages URLs', async () => {
     await access(new URL(`../dist/${relativePath}`, import.meta.url));
   }
 });
+
+test('the home page includes a reusable square-number explorer', async () => {
+  const html = await readFile(
+    new URL('../dist/index.html', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(html, /<square-numbers[\s>]/);
+  assert.match(html, /type="range"[^>]*min="1"[^>]*max="10"/);
+  assert.match(html, /1 \+ 3 \+ 5 \+ 7 = 4² = 16/);
+  assert.match(html, /<noscript>/);
+
+  const scripts = [
+    ...html.matchAll(/<script[^>]*src="(\/math-pearls\/[^"?]+\.js)"/g),
+  ];
+  assert.match(
+    html,
+    /<script[^>]*type="module"/,
+    'The explorer must include browser JavaScript, inline or external',
+  );
+
+  for (const [, src] of scripts) {
+    const relativePath = src.slice('/math-pearls/'.length);
+    await access(new URL(`../dist/${relativePath}`, import.meta.url));
+  }
+});

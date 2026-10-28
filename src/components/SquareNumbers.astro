@@ -1,0 +1,128 @@
+---
+const side = 4;
+const oddNumbers = Array.from({ length: side }, (_, index) => 2 * index + 1);
+---
+
+<square-numbers>
+  <label>
+    Side length: <span data-side>{side}</span>
+    <input type="range" min="1" max="10" value={side} step="1" disabled />
+  </label>
+  <div class="square" style={`--side: ${side}`} aria-hidden="true">
+    {Array.from({ length: side * side }, (_, index) => (
+      <span
+        class:list={[
+          'tile',
+          {
+            newest:
+              index % side === side - 1 ||
+              Math.floor(index / side) === side - 1,
+          },
+        ]}
+      />
+    ))}
+  </div>
+  <output aria-live="polite" aria-atomic="true">
+    {oddNumbers.join(' + ')} = {side}² = {side * side}
+  </output>
+  <p>The highlighted outer edge adds the next odd number of tiles.</p>
+  <noscript>Enable JavaScript to change the square's side length.</noscript>
+</square-numbers>
+
+<script>
+  class SquareNumbers extends HTMLElement {
+    connectedCallback() {
+      const slider = this.querySelector('input');
+      const sideLabel = this.querySelector('[data-side]');
+      const square = this.querySelector<HTMLDivElement>('.square');
+      const equation = this.querySelector('output');
+
+      if (!slider || !sideLabel || !square || !equation) {
+        throw new Error('SquareNumbers is missing its controls or display.');
+      }
+
+      slider.oninput = () => {
+        const side = slider.valueAsNumber;
+        const tiles = Array.from({ length: side * side }, (_, index) => {
+          const tile = document.createElement('span');
+          tile.className = 'tile';
+          tile.classList.toggle(
+            'newest',
+            index % side === side - 1 || Math.floor(index / side) === side - 1,
+          );
+          return tile;
+        });
+        const oddNumbers = Array.from(
+          { length: side },
+          (_, index) => 2 * index + 1,
+        );
+
+        square.style.setProperty('--side', String(side));
+        square.replaceChildren(...tiles);
+        sideLabel.textContent = String(side);
+        equation.value = `${oddNumbers.join(' + ')} = ${side}² = ${side * side}`;
+      };
+
+      slider.disabled = false;
+    }
+  }
+
+  customElements.define('square-numbers', SquareNumbers);
+</script>
+
+<style>
+  square-numbers {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid #b9ccc4;
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    max-width: 20rem;
+    margin: 0.75rem 0 1.25rem;
+    accent-color: #12624f;
+  }
+
+  input:focus-visible {
+    outline: 2px solid #12624f;
+    outline-offset: 4px;
+  }
+
+  .square {
+    display: grid;
+    grid-template-columns: repeat(var(--side), 1fr);
+    gap: 3px;
+    max-width: 20rem;
+    aspect-ratio: 1;
+    margin-bottom: 1rem;
+  }
+
+  .square :global(.tile) {
+    background: #12624f;
+    border-radius: 2px;
+  }
+
+  .square :global(.newest) {
+    background: #e9b34c;
+  }
+
+  output {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+</style>
