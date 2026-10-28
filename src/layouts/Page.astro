@@ -1,0 +1,77 @@
+---
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+  };
+}
+
+const { title, description } = Astro.props.frontmatter;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+  </head>
+  <body>
+    <header>
+      <a href={import.meta.env.BASE_URL}>Math Pearls</a>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #202624;
+    background: #faf9f6;
+    line-height: 1.7;
+    color-scheme: light;
+  }
+
+  body {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  header {
+    margin-bottom: 3rem;
+  }
+
+  a {
+    color: #12624f;
+    text-underline-offset: 0.2em;
+  }
+
+  a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    line-height: 1.2;
+  }
+
+  img,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: 1rem;
+  }
+</style>

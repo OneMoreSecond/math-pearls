@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+coverage/
+agents/tmp/
+.env
+.env.*
+!.env.example
+*-debug.log*
+*-error.log*
+.DS_Store
